@@ -1,0 +1,12 @@
+{
+  "name": "edge-gateway",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Nginx-focused edge gateway learning monorepo",
+  "scripts": {
+    "start": "docker compose up --build",
+    "stop": "docker compose down",
+    "logs": "docker compose logs -f",
+    "restart:nginx": "docker compose restart nginx"
+  }
+}
