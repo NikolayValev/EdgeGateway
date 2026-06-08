@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>EdgeGateway</title>
+    <link rel="stylesheet" href="/assets/style.css" />
+</head>
+<body>
+    <header>
+        <h1>EdgeGateway</h1>
+        <p class="subtitle">An Nginx edge-gateway learning playground</p>
+    </header>
+
+    <main>
+        <section>
+            <h2>What is this?</h2>
+            <p>
+                EdgeGateway is a minimal monorepo for experimenting with Nginx features:
+                reverse proxying, caching, rate limiting, load balancing, and security headers.
+            </p>
+        </section>
+
+        <section>
+            <h2>Try the API</h2>
+            <button id="btn-products">GET /api/products</button>
+            <button id="btn-login">POST /auth/login</button>
+            <pre id="output">Response will appear here…</pre>
+        </section>
+    </main>
+
+    <footer>
+        <p>EdgeGateway &mdash; learning Nginx, one feature at a time.</p>
+    </footer>
+
+    <script src="/assets/app.js"></script>
+</body>
+</html>

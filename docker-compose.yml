@@ -1,0 +1,71 @@
+# =============================================================================
+# docker-compose.yml — EdgeGateway
+# =============================================================================
+# Brings up three containers:
+#   nginx  — reverse proxy on host port 80
+#   api    — Node.js API service  (internal port 3000)
+#   auth   — Node.js Auth service (internal port 3001)
+#
+# All containers join the "gateway" bridge network so Nginx can reach
+# the services by their service names (api, auth).
+# =============================================================================
+
+services:
+
+  # ---------------------------------------------------------------------------
+  # Nginx reverse proxy
+  # ---------------------------------------------------------------------------
+  nginx:
+    image: nginx:1.27-alpine
+    ports:
+      - "80:80"
+    volumes:
+      # Main config
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+      # Modular feature configs
+      - ./nginx/conf.d:/etc/nginx/conf.d:ro
+      # Static files
+      - ./static:/usr/share/nginx/html:ro
+    depends_on:
+      - api
+      - auth
+    networks:
+      - gateway
+    restart: unless-stopped
+
+  # ---------------------------------------------------------------------------
+  # API service
+  # ---------------------------------------------------------------------------
+  api:
+    build:
+      context: ./services/api
+      dockerfile: Dockerfile
+    expose:
+      - "3000"         # only reachable inside the Docker network
+    networks:
+      - gateway
+    restart: unless-stopped
+    environment:
+      - NODE_ENV=production
+
+  # ---------------------------------------------------------------------------
+  # Auth service
+  # ---------------------------------------------------------------------------
+  auth:
+    build:
+      context: ./services/auth
+      dockerfile: Dockerfile
+    expose:
+      - "3001"         # only reachable inside the Docker network
+    networks:
+      - gateway
+    restart: unless-stopped
+    environment:
+      - NODE_ENV=production
+
+# ---------------------------------------------------------------------------
+# Shared bridge network
+# ---------------------------------------------------------------------------
+networks:
+  gateway:
+    driver: bridge
